@@ -6,14 +6,15 @@
 	We have inserted 3 bugs that the compiler will catch and 3 that it won't.
 */
 
-#include "std_lib_facilities.h"
+#include "C:\Users\mark.alexieff\source\repos\std_lib_facilities.h"
 
 struct Token {
 	char kind;
 	double value;
 	string name;
-	Token(char ch) :kind(ch), value(0) { }
-	Token(char ch, double val) :kind(ch), value(val) { }
+	Token(char ch) :kind(ch), value(0) { }					/* Single kind initializer*/
+	Token(char ch, double val) :kind(ch), value(val) { }	/* initializer for values*/
+	Token(char ch, string n) :kind(ch), name(n) { }			/* inititalizer for variables*/
 };
 
 class Token_stream {
@@ -70,17 +71,17 @@ Token Token_stream::get()
 		if (isalpha(ch)) {
 			string s;
 			s += ch;
-			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s = ch;
+			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
 			cin.unget();
 			if (s == "let") return Token(let);
-			if (s == "quit") return Token(name);
+			if (s == "quit") return Token(quit);
 			return Token(name, s);
 		}
 		error("Bad token");
 	}
 }
 
-void Token_stream::ignore(char c)
+void Token_stream::ignore(char c)   /*have no idea what this is for*/
 {
 	if (full && c == buffer.kind) {
 		full = false;
@@ -101,14 +102,14 @@ struct Variable {
 
 vector<Variable> names;
 
-double get_value(string s)
+double get_value(string s)			/* finds value of a named variable*/
 {
-	for (int i = 0; i < names.size(); ++i)
+	for (int i = 0; i <= names.size(); ++i)
 		if (names[i].name == s) return names[i].value;
 	error("get: undefined name ", s);
 }
 
-void set_value(string s, double d)
+void set_value(string s, double d)     /* sets the value of a variable*/
 {
 	for (int i = 0; i <= names.size(); ++i)
 		if (names[i].name == s) {
@@ -118,7 +119,7 @@ void set_value(string s, double d)
 	error("set: undefined name ", s);
 }
 
-bool is_declared(string s)
+bool is_declared(string s)				/*cehcks to see if a name has already been declared for a variable*/
 {
 	for (int i = 0; i < names.size(); ++i)
 		if (names[i].name == s) return true;
