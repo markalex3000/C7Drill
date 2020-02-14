@@ -47,7 +47,7 @@ Token Token_stream::get()
 	case '-':
 	case '*':
 	case '/':
-	case '%':
+	case '%':      //Modulo not implemented
 	case ';':
 	case '=':
 		return Token(ch);
