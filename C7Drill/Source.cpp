@@ -3,7 +3,7 @@
 
 	Helpful comments removed.
 
-	We have inserted 3 bugs that the compiler will catch and 3 that it won't.
+	We have inserted 3 bugs that the compiler will catch and 3 that it won't.  TEST
 */
 
 #include "C:\Users\mark.alexieff\source\repos\std_lib_facilities.h"
