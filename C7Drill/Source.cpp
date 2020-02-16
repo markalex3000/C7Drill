@@ -250,12 +250,14 @@ catch (exception& e) {
 	cerr << "exception: " << e.what() << endl;
 	char c;
 	while (cin >> c && c != ';');
+	keep_window_open("~~");
 	return 1;
 }
 catch (...) {
 	cerr << "exception\n";
 	char c;
 	while (cin >> c && c != ';');
+	keep_window_open("~~");
 	return 2;
 }
 
