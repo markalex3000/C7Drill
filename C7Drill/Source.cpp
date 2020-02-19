@@ -50,6 +50,7 @@ Token Token_stream::get()
 	case '%':      //Modulo not implemented
 	case ';':
 	case '=':
+	case quit:     // "Q"
 		return Token(ch);
 	case '.':
 	case '0':
@@ -230,7 +231,10 @@ void calculate()
 		cout << prompt;
 		Token t = ts.get();
 		while (t.kind == print) t = ts.get();
-		if (t.kind == quit) return;
+		if (t.kind == quit) {
+			keep_window_open("~~");
+			return;
+		}
 		ts.unget(t);
 		cout << result << statement() << endl;
 	}
