@@ -21,12 +21,12 @@ class Token_stream {
 	bool full;
 	Token buffer;
 public:
-	Token_stream() :full(0), buffer(0) { }
+	Token_stream() :full(0), buffer(0) { }					// Initilizer
 
-	Token get();
-	void unget(Token t) { buffer = t; full = true; }
+	Token get();											//function that returns a token
+	void unget(Token t) { buffer = t; full = true; }        // puts a token in the buffer
 
-	void ignore(char);
+	void ignore(char);										//not sure
 };
 
 const char let = 'L';
@@ -37,7 +37,7 @@ const char name = 'a';
 
 Token Token_stream::get()
 {
-	if (full) { full = false; return buffer; }
+	if (full) { full = false; return buffer; }      //if there is sometthing in the buffer return it
 	char ch;
 	cin >> ch;
 	switch (ch) {
@@ -63,13 +63,13 @@ Token Token_stream::get()
 	case '7':
 	case '8':
 	case '9':
-	{	cin.unget();
-	double val;
+	{	cin.unget();			// not to be confused with Token.unget - this is a cin method 
+	double val;							// that puts the last char read back onto the input buffer
 	cin >> val;
 	return Token(number, val);
 	}
 	default:
-		if (isalpha(ch)) {
+		if (isalpha(ch)) {			// Captures strings for var names with checks for LET and QUIT
 			string s;
 			s += ch;
 			while (cin.get(ch) && (isalpha(ch) || isdigit(ch))) s += ch;
@@ -84,14 +84,14 @@ Token Token_stream::get()
 
 void Token_stream::ignore(char c)   /*have no idea what this is for*/
 {
-	if (full && c == buffer.kind) {
+	if (full && c == buffer.kind) {   //clears the buffer if token of the same kind in buffer
 		full = false;
 		return;
 	}
 	full = false;
 
 	char ch;
-	while (cin >> ch)
+	while (cin >> ch)				// reads the buffer until ch does not = the character parameter
 		if (ch == c) return;
 }
 
@@ -134,24 +134,29 @@ double expression();
 double primary()
 {
 	Token t = ts.get();
+	double d{ 0 };
 	switch (t.kind) {
-	case '(':
-	{	double d = expression();
-	t = ts.get();
-	if (t.kind != ')') error("'(' expected");
+	case '(':									//returns value of paranthetical expression
+		{ d = expression();
+	//	t = ts.get();
+	//	if (t.kind != ')') error("'(' expected");  //need to work on this
 	}
-	case '-':
+	case ')':
+		{
+		return d;
+	}
+	case '-':									//returns negative of the following 
 		return -primary();
 	case number:
-		return t.value;
+		return t.value;							//return the value if a number
 	case name:
-		return get_value(t.name);
+		return get_value(t.name);				//returns the value of a variable
 	default:
 		error("primary expected");
 	}
 }
 
-double term()
+double term()								//handles mutliplication and division of primaries
 {
 	double left = primary();
 	while (true) {
@@ -159,12 +164,12 @@ double term()
 		switch (t.kind) {
 		case '*':
 			left *= primary();
-			break;
+			break;					
 		case '/':
 		{	double d = primary();
-		if (d == 0) error("divide by zero");
-		left /= d;
-		break;
+			if (d == 0) error("divide by zero");
+			left /= d;
+			break;
 		}
 		default:
 			ts.unget(t);
@@ -173,7 +178,7 @@ double term()
 	}
 }
 
-double expression()
+double expression()				//handles addition and subtraction
 {
 	double left = term();
 	while (true) {
@@ -230,7 +235,7 @@ void calculate()
 	while (true) try {
 		cout << prompt;
 		Token t = ts.get();
-		while (t.kind == print) t = ts.get();
+		while (t.kind == print) t = ts.get();   //burns multiple ';'s
 		if (t.kind == quit) {
 			keep_window_open("~~");
 			return;
@@ -253,7 +258,7 @@ try {
 catch (exception& e) {
 	cerr << "exception: " << e.what() << endl;
 	char c;
-	while (cin >> c && c != ';');
+	while (cin >> c && c != ';');   //burns the rest of cin until ;
 	keep_window_open("~~");
 	return 1;
 }
