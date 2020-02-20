@@ -138,12 +138,9 @@ double primary()
 	switch (t.kind) {
 	case '(':									//returns value of paranthetical expression
 		{ d = expression();
-	//	t = ts.get();
-	//	if (t.kind != ')') error("'(' expected");  //need to work on this
-	}
-	case ')':
-		{
-		return d;
+		t = ts.get();
+		if (t.kind != ')') error("')' expected");  //works much better - key was understadning that
+		return d;									// term and expression unget the last thing they read
 	}
 	case '-':									//returns negative of the following 
 		return -primary();
