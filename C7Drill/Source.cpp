@@ -144,6 +144,8 @@ double primary()
 	}
 	case '-':									//returns negative of the following 
 		return -primary();
+	case '+':
+		return primary();
 	case number:
 		return t.value;							//return the value if a number
 	case name:
@@ -166,6 +168,12 @@ double term()								//handles mutliplication and division of primaries
 		{	double d = primary();
 			if (d == 0) error("divide by zero");
 			left /= d;
+			break;
+		}
+		case '%':
+		{	double d = primary();
+			if (d == 0) error("%:divide by zero");
+			left = fmod(left, d);
 			break;
 		}
 		default:
