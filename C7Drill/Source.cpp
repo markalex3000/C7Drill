@@ -4,6 +4,9 @@
 	Helpful comments removed.
 
 	We have inserted 3 bugs that the compiler will catch and 3 that it won't.  TEST
+
+	2/23/20 - Have got this working properly and will use this as the base moving forward.
+
 */
 
 #include "C:\Users\mark.alexieff\source\repos\std_lib_facilities.h"
